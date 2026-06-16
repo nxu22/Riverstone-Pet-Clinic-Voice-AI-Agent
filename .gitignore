@@ -1,0 +1,21 @@
+# virtual environment
+venv/
+
+# secrets
+.env
+
+# python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# database (dev only, never commit)
+riverstone.db
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
