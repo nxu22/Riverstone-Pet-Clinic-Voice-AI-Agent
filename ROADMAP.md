@@ -13,9 +13,9 @@ backend first, the voice last.
 - **Build:** virtual env, FastAPI app, folder structure, `.env` + `.gitignore`, a `/health` endpoint.
 - **Why:** something that runs end-to-end (even if it does nothing yet) removes friction for everything after.
 - **Done when:** `uvicorn` serves `/health` locally and returns OK.
-- [ ] venv created, FastAPI + uvicorn installed
-- [ ] folder structure agreed
-- [ ] `/health` endpoint runs locally
+- [x] venv created, FastAPI + uvicorn installed
+- [x] folder structure agreed
+- [x] `/health` endpoint runs locally
 
 ## Phase 1 — Domain model & calendar core
 - **Goal:** the scheduling "brain" — no voice, no HTTP yet.

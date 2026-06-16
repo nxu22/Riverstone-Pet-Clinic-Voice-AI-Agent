@@ -48,5 +48,4 @@ The phone layer is the *last* thing we add — debugging logic over a live call 
   items in `ROADMAP.md` as each phase completes.
 
 ## Current status
-**Phase 0 — Foundation.** Repo + README exist. Next: build the project skeleton and a
-`/health` endpoint we can run locally. (Update this line as we progress.)
+**Phase 0 — DONE.** Skeleton + `/health` endpoint running. Next: Phase 1 — domain models and calendar core.
