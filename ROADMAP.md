@@ -23,10 +23,10 @@ backend first, the voice last.
   `CalendarProvider` interface + SQLite implementation, 30-min slot generation, seed data.
 - **Why:** this is the actual product. Everything else is plumbing around it.
 - **Done when:** in a small test/REPL you can list open slots and create one appointment.
-- [ ] models defined
-- [ ] `CalendarProvider` interface + SQLite impl
-- [ ] slot generation (Mon–Fri 9–17, 30-min)
-- [ ] seed data + species→vet routing
+- [x] models defined
+- [x] `CalendarProvider` interface + SQLite impl
+- [x] slot generation (Mon–Fri 9–17, 30-min)
+- [x] seed data + species→vet routing
 
 ## Phase 2 — Booking actions as an API
 - **Goal:** book / look-up / reschedule / cancel over HTTP.

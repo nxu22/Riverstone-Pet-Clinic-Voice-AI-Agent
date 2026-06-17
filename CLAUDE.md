@@ -48,4 +48,4 @@ The phone layer is the *last* thing we add — debugging logic over a live call 
   items in `ROADMAP.md` as each phase completes.
 
 ## Current status
-**Phase 0 — DONE.** Skeleton + `/health` endpoint running. Next: Phase 1 — domain models and calendar core.
+**Phase 1 — DONE.** Models, SQLite calendar provider, slot generation, conflict check all passing. Next: Phase 2 — booking API endpoints.
