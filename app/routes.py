@@ -1,6 +1,7 @@
+from datetime import date
 from fastapi import APIRouter, HTTPException
 from app.calendar_provider import route_species_to_vet
-from app.models import Appointment
+from app.models import Appointment, Species
 from app.schemas import (
     AppointmentResponse, BookRequest, BookResponse,
     RescheduleRequest,
@@ -9,6 +10,20 @@ from app.sqlite_provider import SQLiteCalendarProvider
 
 router = APIRouter()
 calendar = SQLiteCalendarProvider()
+
+
+@router.get("/availability")
+def availability(species: str, date: date):
+    try:
+        vet_name = route_species_to_vet(Species(species))
+    except ValueError:
+        raise HTTPException(status_code=422, detail=f"Unknown species: {species}")
+    slots = calendar.get_available_slots(date, vet_name)
+    return {
+        "vet": vet_name,
+        "date": str(date),
+        "available_slots": [s.strftime("%H:%M") for s in slots],
+    }
 
 
 @router.post("/book", response_model=BookResponse, status_code=201)

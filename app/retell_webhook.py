@@ -36,6 +36,8 @@ async def retell_webhook(request: Request):
     args: dict = data.get("args", {})
 
     # 4. route to the right function
+    if name == "check_availability":
+        return _handle_check_availability(args)
     if name == "book_appointment":
         return _handle_book(args)
     if name == "lookup_appointment":
@@ -49,6 +51,27 @@ async def retell_webhook(request: Request):
 
 
 # ── handlers ──────────────────────────────────────────────────────────────────
+
+def _handle_check_availability(args: dict) -> dict:
+    from datetime import date as date_type
+    try:
+        species = Species(args["species"])
+        day = date_type.fromisoformat(args["date"])
+    except (KeyError, ValueError) as e:
+        return _result(f"Sorry, I need a valid species and date to check availability. ({e})")
+
+    vet_name = route_species_to_vet(species)
+    slots = calendar.get_available_slots(day, vet_name)
+
+    if not slots:
+        return _result(f"Sorry, {vet_name} has no openings on {day.strftime('%A, %B %d')}. Would you like to try another day?")
+
+    # report at most 3 slots so the caller isn't overwhelmed
+    shown = slots[:3]
+    times = ", ".join(s.strftime("%I:%M %p") for s in shown)
+    more = f" and {len(slots) - 3} more" if len(slots) > 3 else ""
+    return _result(f"{vet_name} has openings on {day.strftime('%A, %B %d')}: {times}{more}. Which time works for you?")
+
 
 def _handle_book(args: dict) -> dict:
     try:
