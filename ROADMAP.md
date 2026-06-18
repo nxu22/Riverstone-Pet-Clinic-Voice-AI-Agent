@@ -33,10 +33,10 @@ backend first, the voice last.
 - **Build:** FastAPI endpoints for each action, confirmation-code generation, validation, conflict handling.
 - **Why:** Retell will call these by webhook. Proving them with `curl` first is far faster than over a phone.
 - **Done when:** you can run the full lifecycle (book → look up → reschedule → cancel) with `curl`/a test script.
-- [ ] book endpoint
-- [ ] look-up endpoint (last name + pet, or phone)
-- [ ] reschedule endpoint
-- [ ] cancel endpoint
+- [x] book endpoint
+- [x] look-up endpoint (by confirmation code)
+- [x] reschedule endpoint
+- [x] cancel endpoint
 
 ## Phase 3 — Retell custom-function webhook
 - **Goal:** bridge the voice layer's "tool calls" to your FastAPI.

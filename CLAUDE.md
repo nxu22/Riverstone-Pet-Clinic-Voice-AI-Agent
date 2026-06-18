@@ -48,4 +48,4 @@ The phone layer is the *last* thing we add — debugging logic over a live call 
   items in `ROADMAP.md` as each phase completes.
 
 ## Current status
-**Phase 1 — DONE.** Models, SQLite calendar provider, slot generation, conflict check all passing. Next: Phase 2 — booking API endpoints.
+**Phase 2 — DONE.** All four endpoints (book, lookup, reschedule, cancel) passing 8/8 tests including error cases. Next: Phase 3 — Retell webhook bridge.
