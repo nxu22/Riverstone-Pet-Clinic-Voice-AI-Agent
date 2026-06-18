@@ -43,9 +43,9 @@ backend first, the voice last.
 - **Build:** the webhook endpoint Retell calls, request/response shaped to Retell's format, signature check.
 - **Why:** this bridge is the #1 source of voice-agent bugs — format mismatches. Get it right in isolation.
 - **Done when:** a simulated Retell payload (posted via curl) triggers a real booking.
-- [ ] webhook endpoint
-- [ ] request/response mapping to Retell format
-- [ ] signature verification
+- [x] webhook endpoint
+- [x] request/response mapping to Retell format
+- [x] signature verification
 
 ## Phase 4 — Conversation design (Claude Haiku)
 - **Goal:** the agent's brain & personality.

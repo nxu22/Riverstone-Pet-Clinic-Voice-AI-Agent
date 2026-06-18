@@ -48,4 +48,4 @@ The phone layer is the *last* thing we add — debugging logic over a live call 
   items in `ROADMAP.md` as each phase completes.
 
 ## Current status
-**Phase 2 — DONE.** All four endpoints (book, lookup, reschedule, cancel) passing 8/8 tests including error cases. Next: Phase 3 — Retell webhook bridge.
+**Phase 3 — DONE.** Retell webhook bridge passing 8/8 tests: correct request format (args/call), raw-body signature verify, 401 on bad sig, all 4 functions routed. Next: Phase 4 — conversation design (system prompt + Claude Haiku).
