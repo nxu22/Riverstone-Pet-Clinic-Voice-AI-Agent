@@ -48,4 +48,4 @@ The phone layer is the *last* thing we add — debugging logic over a live call 
   items in `ROADMAP.md` as each phase completes.
 
 ## Current status
-**Phase 3 — DONE.** Retell webhook bridge passing 8/8 tests: correct request format (args/call), raw-body signature verify, 401 on bad sig, all 4 functions routed. Next: Phase 4 — conversation design (system prompt + Claude Haiku).
+**Phase 4 — DONE.** System prompt complete (identity, FAQ, 6-step booking flow, 3 hard rules). check_availability added as 5th webhook function. 6/6 conversation scenarios passing including emergency redirect and medical guardrail. Next: Phase 5 — voice integration (Retell + ElevenLabs).

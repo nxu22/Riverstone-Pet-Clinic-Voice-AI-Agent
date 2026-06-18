@@ -53,9 +53,9 @@ backend first, the voice last.
   out-of-scope guardrails (no medical advice).
 - **Why:** a voice agent is only as good as its prompt. This is where the demo shines or fails.
 - **Done when:** a text-only conversation simulation books correctly and refuses out-of-scope asks.
-- [ ] system prompt + FAQ
-- [ ] booking flow logic
-- [ ] guardrails (emergency redirect, no medical advice)
+- [x] system prompt + FAQ
+- [x] booking flow logic
+- [x] guardrails (emergency redirect, no medical advice)
 
 ## Phase 5 — Voice integration (Retell + ElevenLabs)
 - **Goal:** make it actually talk.
