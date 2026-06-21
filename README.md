@@ -110,4 +110,4 @@ Riverstone Pet Clinic is **fictional** and uses **mock data**. The agent does no
 
 ---
 
-**Author:** [Portfolio](https://nanxu.site) · [GitHub](https://github.com/nxu22) · [LinkedIn](https://www.linkedin.com/in/n-xu)
+[Portfolio](https://nanxu.site) · [GitHub](https://github.com/nxu22) · [LinkedIn](https://www.linkedin.com/in/n-xu)
