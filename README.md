@@ -6,7 +6,7 @@ A production-style **voice AI agent** that answers calls for a (fictional) pet c
 
 ## Demo
 
-<video src="RecallAI.mp4" controls width="100%"></video>
+[![Watch the demo](https://cdn-cf-east.streamable.com/image/yf0nor.jpg)](https://streamable.com/yf0nor)
 
 ## What it does
 
