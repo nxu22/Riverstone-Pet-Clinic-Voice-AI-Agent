@@ -1,3 +1,5 @@
+import os
+import httpx
 from datetime import date
 from fastapi import APIRouter, HTTPException
 from app.calendar_provider import route_species_to_vet
@@ -10,6 +12,26 @@ from app.sqlite_provider import SQLiteCalendarProvider
 
 router = APIRouter()
 calendar = SQLiteCalendarProvider()
+
+
+def _notify_n8n(appt: Appointment) -> None:
+    url = os.getenv("N8N_WEBHOOK_URL", "").strip()
+    if not url:
+        return
+    payload = {
+        "confirmation_code": appt.confirmation_code,
+        "owner_name": appt.owner_name,
+        "pet_name": appt.pet_name,
+        "species": appt.species.value,
+        "vet": appt.vet_name,
+        "appointment_time": appt.date_time.strftime("%Y-%m-%dT%H:%M:%S"),
+        "phone": appt.phone,
+    }
+    try:
+        httpx.post(url, json=payload, timeout=5)
+        print(f"n8n notified: {appt.confirmation_code}")
+    except Exception as e:
+        print(f"n8n notification failed (booking still OK): {e}")
 
 
 @router.get("/availability")
@@ -42,6 +64,7 @@ def book(req: BookRequest):
     except ValueError as e:
         raise HTTPException(status_code=409, detail=str(e))
 
+    _notify_n8n(appt)
     return BookResponse(
         confirmation_code=appt.confirmation_code,
         owner_name=appt.owner_name,

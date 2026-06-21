@@ -11,6 +11,7 @@ load_dotenv()
 from app.calendar_provider import route_species_to_vet, TIMEZONE
 from app.models import Appointment, Species
 from app.sqlite_provider import SQLiteCalendarProvider
+from app.routes import _notify_n8n
 
 router = APIRouter()
 calendar = SQLiteCalendarProvider()
@@ -19,6 +20,7 @@ retell_client = Retell(api_key=os.getenv("RETELL_API_KEY", ""))
 
 def _result(text: str) -> dict:
     return {"result": text}
+
 
 
 @router.post("/retell-webhook")
@@ -131,6 +133,7 @@ def _handle_book(args: dict) -> dict:
             date_time=datetime.fromisoformat(args["date_time"]),
             phone=args["phone"],
         ))
+        _notify_n8n(appt)
         return _result(
             f"Appointment confirmed! Code: {appt.confirmation_code}. "
             f"{appt.vet_name} will see {appt.pet_name} on "
