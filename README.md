@@ -4,12 +4,6 @@ A production-style **voice AI agent** that answers calls for a (fictional) pet c
 
 > Built to demonstrate end-to-end voice-agent engineering: conversation design, tool/function calling, signature-verified webhooks, anti-hallucination guardrails, and a backend that is the single source of truth.
 
-## Demo
-
-[▶️ Watch the demo](PASTE_DEMO_LINK_HERE) — voice booking on the left, the live appointments dashboard updating on the right.
-
-<!-- Optional: drop a GIF/thumbnail here -->
-
 ## What it does
 
 - **Natural voice conversation** — the agent ("River") speaks in a warm, professional tone and drives a step-by-step booking flow.
@@ -112,4 +106,4 @@ Riverstone Pet Clinic is **fictional** and uses **mock data**. The agent does no
 
 ---
 
-**Author:** [Your name] · [Portfolio](https://nanxu.site) · [GitHub](https://github.com/nxu22) · [LinkedIn](https://www.linkedin.com/in/n-xu)
+**Author:** [Portfolio](https://nanxu.site) · [GitHub](https://github.com/nxu22) · [LinkedIn](https://www.linkedin.com/in/n-xu)
