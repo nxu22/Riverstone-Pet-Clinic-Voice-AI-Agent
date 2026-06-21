@@ -4,6 +4,10 @@ A production-style **voice AI agent** that answers calls for a (fictional) pet c
 
 > Built to demonstrate end-to-end voice-agent engineering: conversation design, tool/function calling, signature-verified webhooks, anti-hallucination guardrails, and a backend that is the single source of truth.
 
+## Demo
+
+<video src="RecallAI.mp4" controls width="100%"></video>
+
 ## What it does
 
 - **Natural voice conversation** — the agent ("River") speaks in a warm, professional tone and drives a step-by-step booking flow.
