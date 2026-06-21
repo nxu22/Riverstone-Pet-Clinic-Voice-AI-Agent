@@ -99,3 +99,20 @@ def cancel(confirmation_code: str):
     if not found:
         raise HTTPException(status_code=404, detail=f"No appointment found for code {confirmation_code}.")
     return {"message": f"Appointment {confirmation_code.upper()} has been cancelled."}
+
+
+@router.get("/appointments")
+def list_appointments():
+    with calendar._connect() as conn:
+        rows = conn.execute(
+            "SELECT * FROM appointments ORDER BY created_at DESC, id DESC"
+        ).fetchall()
+    result = []
+    for row in rows:
+        r = dict(row)
+        if r.get("created_at"):
+            r["created_at"] = r["created_at"].replace(" ", "T")
+        if r.get("date_time"):
+            r["date_time"] = r["date_time"].replace(" ", "T")
+        result.append(r)
+    return result

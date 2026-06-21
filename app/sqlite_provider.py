@@ -48,9 +48,15 @@ class SQLiteCalendarProvider(CalendarProvider):
                     species          TEXT    NOT NULL,
                     vet_name         TEXT    NOT NULL,
                     date_time        TEXT    NOT NULL,
-                    phone            TEXT    NOT NULL
+                    phone            TEXT    NOT NULL,
+                    created_at       TEXT    DEFAULT (datetime('now'))
                 )
             """)
+            # migrate existing databases that lack created_at
+            cols = [r[1] for r in conn.execute("PRAGMA table_info(appointments)")]
+            if "created_at" not in cols:
+                conn.execute("ALTER TABLE appointments ADD COLUMN created_at TEXT")
+                conn.execute("UPDATE appointments SET created_at = datetime('now') WHERE created_at IS NULL")
 
     def get_available_slots(self, day: date, vet_name: str) -> list[datetime]:
         all_slots = generate_slots(day)

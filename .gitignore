@@ -19,3 +19,7 @@ riverstone.db
 # OS
 .DS_Store
 Thumbs.db
+
+# video files (host separately, e.g. YouTube)
+*.mp4
+*.mov

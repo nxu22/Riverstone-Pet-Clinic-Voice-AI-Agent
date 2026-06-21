@@ -1,9 +1,14 @@
 import json
 import os
+from datetime import datetime
+from dotenv import load_dotenv
 from fastapi import APIRouter, HTTPException, Request
 from retell import Retell
+from zoneinfo import ZoneInfo
 
-from app.calendar_provider import route_species_to_vet
+load_dotenv()
+
+from app.calendar_provider import route_species_to_vet, TIMEZONE
 from app.models import Appointment, Species
 from app.sqlite_provider import SQLiteCalendarProvider
 
@@ -18,22 +23,21 @@ def _result(text: str) -> dict:
 
 @router.post("/retell-webhook")
 async def retell_webhook(request: Request):
-    # 1. read raw body BEFORE any parsing
     raw_body = await request.body()
+    data = json.loads(raw_body)
     signature = request.headers.get("x-retell-signature", "")
 
-    # 2. verify signature — must use raw bytes, not re-serialised JSON
     if not retell_client.verify(
         body=raw_body.decode(),
         api_key=os.getenv("RETELL_API_KEY", ""),
         signature=signature,
     ):
+        print("retell-webhook: signature verification FAILED")
         raise HTTPException(status_code=401, detail="Invalid signature.")
 
-    # 3. parse JSON only after signature check passes
-    data = json.loads(raw_body)
     name: str = data.get("name", "")
     args: dict = data.get("args", {})
+    print(f"retell-webhook: {name} called")
 
     # 4. route to the right function
     if name == "check_availability":
@@ -52,25 +56,65 @@ async def retell_webhook(request: Request):
 
 # ── handlers ──────────────────────────────────────────────────────────────────
 
+_WEEKDAY_MAP = {
+    "monday": 0, "tuesday": 1, "wednesday": 2, "thursday": 3,
+    "friday": 4, "saturday": 5, "sunday": 6,
+}
+
+def _resolve_date(date_str: str):
+    """Resolve relative date strings to a real date in Winnipeg timezone."""
+    from datetime import date as date_type, timedelta
+    now = datetime.now(TIMEZONE)
+    today = now.date()
+    s = date_str.strip().lower()
+
+    if s in ("today", "tonight"):
+        return today
+    if s == "tomorrow":
+        return today + timedelta(days=1)
+
+    is_next = s.startswith("next ")
+    key = s[5:] if is_next else s
+
+    if key in _WEEKDAY_MAP:
+        target = _WEEKDAY_MAP[key]
+        days_ahead = (target - today.weekday()) % 7 or 7
+        if is_next:
+            days_ahead += 7
+        return today + timedelta(days=days_ahead)
+
+    return date_type.fromisoformat(date_str)  # ISO fallback
+
+
 def _handle_check_availability(args: dict) -> dict:
-    from datetime import date as date_type
     try:
         species = Species(args["species"])
-        day = date_type.fromisoformat(args["date"])
+        day = _resolve_date(args["date"])
     except (KeyError, ValueError) as e:
         return _result(f"Sorry, I need a valid species and date to check availability. ({e})")
 
     vet_name = route_species_to_vet(species)
     slots = calendar.get_available_slots(day, vet_name)
 
-    if not slots:
-        return _result(f"Sorry, {vet_name} has no openings on {day.strftime('%A, %B %d')}. Would you like to try another day?")
+    # if today, filter out slots that have already passed (30-min buffer)
+    now_wpg = datetime.now(TIMEZONE)
+    if day == now_wpg.date():
+        from datetime import timedelta
+        cutoff = now_wpg + timedelta(minutes=30)
+        slots = [s for s in slots if s > cutoff]
 
-    # report at most 3 slots so the caller isn't overwhelmed
+    day_label = day.strftime("%A, %B %d")
+
+    if not slots:
+        return _result(f"Sorry, {vet_name} has no available openings on {day_label}. Would you like to try another day?")
+
     shown = slots[:3]
     times = ", ".join(s.strftime("%I:%M %p") for s in shown)
-    more = f" and {len(slots) - 3} more" if len(slots) > 3 else ""
-    return _result(f"{vet_name} has openings on {day.strftime('%A, %B %d')}: {times}{more}. Which time works for you?")
+    more = f" and {len(slots) - 3} more options" if len(slots) > 3 else ""
+    return _result(
+        f"{vet_name} has openings on {day_label}: {times}{more}. "
+        f"Which time works for you? Once you pick a time, I will book it as {day_label}."
+    )
 
 
 def _handle_book(args: dict) -> dict:
