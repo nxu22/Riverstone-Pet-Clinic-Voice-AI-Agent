@@ -6,7 +6,7 @@ A production-style voice AI agent that answers calls for a (fictional) pet clini
 
 ## Demo
 
-[![Watch the demo](https://cdn-cf-east.streamable.com/image/yf0nor.jpg)](https://streamable.com/yf0nor)
+[![Watch the demo](https://cdn-cf-east.streamable.com/image/wrv0mbad.jpg)](https://streamable.com/wrv0mbad)
 
 ## What it does
 
